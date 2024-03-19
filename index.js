@@ -3,6 +3,9 @@ const express = require('express')
 // create express application and store it in the app variable
 const app = express()
 
+// Middleware to parse JSON bodies
+app.use(express.json());
+
 // raw server data (for the time being)
 let persons = [
     { 
@@ -27,17 +30,17 @@ let persons = [
     }
 ]
 
-
+// Hellow World! example
 app.get('/', (request, response) => {
   response.send('<h1>Hello World!</h1>')
 })
 
-//return hardcoded string of persons
+//return all persons
 app.get('/api/persons', (request, response) => {
   response.json(persons)
 })
 
-// reutrn individual person information
+// return an individual person by providing its id
 app.get("/api/persons/:id", (request, response) => {
   // get id and convert to number to use as comparator
   const id = Number(request.params.id)
@@ -54,7 +57,7 @@ app.get("/api/persons/:id", (request, response) => {
   }
 })
 
-//delete person by providing an id
+//delete a single person by providing its id
 app.delete("/api/persons/:id", (request, response) => {
 
   //get id of person to be deleted
@@ -65,6 +68,31 @@ app.delete("/api/persons/:id", (request, response) => {
   
   //return response message
   response.send(`Person with id ${id} will be deleted`)
+})
+
+//Add a single person
+app.post("/api/persons", (request, response) => {
+
+  let name = request.body.name
+  let number = request.body.number
+  let id = Math.floor(Math.random() * 10000) + 1;
+
+  let newPerson = {
+    "id": id,
+    "name": name,
+    "number": number,
+  }
+  //check that the provided name and number are truthy
+  if (name && number){
+    let newArrayLength = persons.push(newPerson)
+    
+    // Assuming successful processing
+    // Respond with a 200 OK status code and a JSON object indicating success
+    response.status(200).json({ message: 'Data received successfully', addedPerson: newPerson });
+  }
+  else {
+    response.status(400).json({ error: 'Invalid request. Check your request data and try again.' });
+  }
 })
 
 //Server Info

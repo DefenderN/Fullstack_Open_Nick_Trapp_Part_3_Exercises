@@ -1,14 +1,37 @@
-GET http://localhost:3001/api/persons
-
-###
+### Get server information
 GET http://localhost:3001/info
 
-###
-GET http://localhost:3001/api/persons/1
+### Get all persons
+GET http://localhost:3001/api/persons
 
-###
+### Get a person that exists
+GET http://localhost:3001/api/persons/2
+
+### Get a person that does not exist
 GET http://localhost:3001/api/persons/100
 
-###
+
+
+### Correctly Adding a Person
+POST http://localhost:3001/api/persons
+Content-Type: application/json
+
+{ 
+      "name": "Peter", 
+      "number": "39-23-6423122"
+}
+
+### Wrongly Adding a Person (Missing name)
+POST http://localhost:3001/api/persons
+Content-Type: application/json
+
+{ 
+      "name": "", 
+      "number": "39-23-6423122"
+}
+
+### Deleting a person that exists
 DELETE http://localhost:3001/api/persons/1
 
+### Deleting a person that does not exist
+DELETE http://localhost:3001/api/persons/1000000
