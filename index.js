@@ -4,7 +4,7 @@ const express = require('express')
 const app = express()
 
 // raw server data (for the time being)
-let notes = [
+let persons = [
     { 
       "id": 1,
       "name": "Arto Hellas", 
@@ -34,9 +34,25 @@ app.get('/', (request, response) => {
 
 //return hardcoded string of persons
 app.get('/api/persons', (request, response) => {
-  response.json(notes)
+  response.json(persons)
 })
 
+app.get("/api/persons/:id", (request, response) => {
+    // get id and convert to number to use as comparator
+    const id = Number(request.params.id)
+
+    // Find id entry in persons array and return the person
+    // or return 404 if no entry for the id exists
+    const person = persons.find(person => person.id === id)
+  
+  if (person) {
+    response.json(person)
+  } else {
+    response.status(404).end()
+  }
+})
+
+//Server Info
 app.get("/info", (request, response) => {
 
     // log the current time stamp
