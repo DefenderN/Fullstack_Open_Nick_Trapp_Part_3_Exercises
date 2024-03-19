@@ -10,15 +10,13 @@ GET http://localhost:3001/api/persons/2
 ### Get a person that does not exist
 GET http://localhost:3001/api/persons/100
 
-
-
 ### Correctly Adding a Person
 POST http://localhost:3001/api/persons
 Content-Type: application/json
 
 { 
-      "name": "Peter", 
-      "number": "39-23-6423122"
+      "name": "Pettter", 
+      "number": "39-eeeeeeeeeeeeee23-6423122"
 }
 
 ### Wrongly Adding a Person (Missing name)
@@ -30,6 +28,14 @@ Content-Type: application/json
       "number": "39-23-6423122"
 }
 
+### Wrongly adding a Person (Name already exists)
+POST http://localhost:3001/api/persons
+Content-Type: application/json
+
+{ 
+      "name": "Peter", 
+      "number": "39-23-6423122"
+}
 ### Deleting a person that exists
 DELETE http://localhost:3001/api/persons/1
 
