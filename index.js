@@ -37,19 +37,34 @@ app.get('/api/persons', (request, response) => {
   response.json(persons)
 })
 
+// reutrn individual person information
 app.get("/api/persons/:id", (request, response) => {
-    // get id and convert to number to use as comparator
-    const id = Number(request.params.id)
+  // get id and convert to number to use as comparator
+  const id = Number(request.params.id)
 
-    // Find id entry in persons array and return the person
-    // or return 404 if no entry for the id exists
-    const person = persons.find(person => person.id === id)
+  // Find id entry in persons array and return the person
+  // or return 404 if no entry for the id exists
+  const person = persons.find(person => person.id === id)
   
+  // Handle a request for a person that does not exist
   if (person) {
     response.json(person)
   } else {
     response.status(404).end()
   }
+})
+
+//delete person by providing an id
+app.delete("/api/persons/:id", (request, response) => {
+
+  //get id of person to be deleted
+  const id = Number(request.params.id)
+  console.log("ID to remove is:", id)
+  // delete entry with matching id
+  persons = persons.filter(person => person.id !== id)
+  
+  //return response message
+  response.send(`Person with id ${id} will be deleted`)
 })
 
 //Server Info
@@ -59,7 +74,7 @@ app.get("/info", (request, response) => {
     const now = new Date().toString();
     
     // get number of persons in the "phonebook"
-    let numberOfPersons = notes.length;
+    let numberOfPersons = persons.length;
 
     //put together response string
     let responseString = `<p>Phonebook contains info for ${numberOfPersons} persons.</p>
