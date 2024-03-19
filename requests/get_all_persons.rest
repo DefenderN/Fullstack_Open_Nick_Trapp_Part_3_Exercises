@@ -41,3 +41,7 @@ DELETE http://localhost:3001/api/persons/1
 
 ### Deleting a person that does not exist
 DELETE http://localhost:3001/api/persons/1000000
+
+### Requesting a nonexistant route
+GET http://localhost:3001/peterparkers
+

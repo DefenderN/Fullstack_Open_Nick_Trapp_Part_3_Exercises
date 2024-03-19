@@ -1,10 +1,15 @@
 //import Express library
 const express = require('express')
+//import morgan middleware logging library
+const morgan = require('morgan')
+
 // create express application and store it in the app variable
 const app = express()
 
 // Middleware to parse JSON bodies
 app.use(express.json());
+//Middleware to log stuff
+app.use(morgan(`tiny`))
 
 // raw server data (for the time being)
 let persons = [
@@ -122,6 +127,13 @@ app.get("/info", (request, response) => {
 
     response.send(responseString)
 })
+
+// Middleware to handle request to nonexisting endpoints
+const unknownEndpoint = (request, response) => {
+  response.status(404).send({ error: 'unknown endpoint' })
+}
+
+app.use(unknownEndpoint)
 
 const PORT = 3001
 app.listen(PORT, () => {
