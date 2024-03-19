@@ -8,8 +8,20 @@ const app = express()
 
 // Middleware to parse JSON bodies
 app.use(express.json());
-//Middleware to log stuff
-app.use(morgan(`tiny`))
+// Middleware to log stuff
+  // create body token to access POST request data
+  morgan.token('body', (req, res) =>{
+    // return the request body of POST requests ONLY
+    if (req.method === 'POST') {
+      return JSON.stringify(req.body)
+    } 
+    // return an empty string for every other request method
+    else {
+      return "";
+    }
+  })
+app.use(morgan(`:method :url :status :res[content-length] - :response-time ms :body`))
+
 
 // raw server data (for the time being)
 let persons = [
@@ -128,11 +140,10 @@ app.get("/info", (request, response) => {
     response.send(responseString)
 })
 
-// Middleware to handle request to nonexisting endpoints
+// Middleware defined AFTER our routes to handle request to nonexisting endpoints
 const unknownEndpoint = (request, response) => {
   response.status(404).send({ error: 'unknown endpoint' })
 }
-
 app.use(unknownEndpoint)
 
 const PORT = 3001
