@@ -17,7 +17,7 @@ app.use(express.json());
 // create body token to access POST request data
 morgan.token('body', (req, res) =>{
   // return the request body of POST requests ONLY
-  if (req.method === 'POST') {
+  if (req.method === 'POST' || req.method === `PUT`) {
     return JSON.stringify(req.body)
   } 
   // return an empty string for every other request method
@@ -125,9 +125,47 @@ app.post("/api/persons", (request, response) => {
     persons.push(newPerson);
     // Respond with 200 OK status code and a success message and
     // the data of the added person
-    response.status(200).json({message: 'Data received successfully', addedPerson: newPerson});
+    response.status(200).json(newPerson);
   }
 })
+
+// Update an existing person
+
+app.put("/api/persons/:id", (request, response) => {
+  console.log("CHECKPOINT 1");
+  // get id and convert to number to use as comparator
+  const id = Number(request.params.id);
+
+  // Find id entry in persons array 
+  // or return 404 if no entry for the id exists
+  const person = persons.find(person => person.id === id);
+  
+  if (person) {
+    // IMPORTANT: Grab the new number from the request body
+    const newNumber = request.body.number; // This line was missing
+    console.log("request body is:", request.body)
+    console.log("newNumber is:", newNumber)
+
+    // Modify the person data
+    persons = persons.map(arrayPerson => {
+      // Use a direct return inside map for cleaner code
+      if (arrayPerson.id === id) {
+        console.log("Ids are equal");
+        // Update the number directly here using the newNumber
+        return {...arrayPerson, number: newNumber}; // Modified to use newNumber
+      } else {
+        return arrayPerson;
+      }
+    });
+
+    // Respond with the updated person object, not the original
+    response.json({...person, number: newNumber}); // Modified to ensure updated info is sent back
+  } else {
+    // Handle a request for a person that does not exist
+    response.status(404).end();
+  }
+});
+
 
 //Server Info
 app.get("/info", (request, response) => {
