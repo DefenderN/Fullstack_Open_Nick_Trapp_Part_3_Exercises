@@ -13,6 +13,8 @@ const app = express()
 app.use(cors())
 // Add mMiddleware to parse JSON bodies
 app.use(express.json());
+//Return file from dist directory for any valid http GET request
+app.use(express.static('dist'))
 // Add morgan Middleware to log stuff
 // create body token to access POST request data
 morgan.token('body', (req, res) =>{
@@ -190,7 +192,9 @@ const unknownEndpoint = (request, response) => {
 }
 app.use(unknownEndpoint)
 
-const PORT = 3001
+// Use the environment variable PORT 
+// or port 3001 if the environment variable PORT is undefined
+const PORT = process.env.PORT || 3001
 app.listen(PORT, () => {
   console.log(`Server running on port ${PORT}`)
 })
