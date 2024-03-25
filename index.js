@@ -1,9 +1,13 @@
+//import dotenv library to handle environment variables
+require('dotenv').config()
 //import Express library
 const express = require('express')
 //import morgan middleware logging library
 const morgan = require('morgan')
 //import cors middleware to allow Cross ORigin Sharing
 const cors = require('cors')
+//import person library to access the MongoDB
+const Person = require(`./models/person`)
 
 // create express application and store it in the app variable
 const app = express()
@@ -61,7 +65,9 @@ app.get('/', (request, response) => {
 
 //Get all persons
 app.get('/api/persons', (request, response) => {
-  response.json(persons)
+  Person.find({}).then(persons => {
+    response.json(persons)
+  })
 })
 
 // Get single person by providing its id

@@ -26,6 +26,19 @@ const personSchema = new mongoose.Schema({
   number: String,
 })
 
+// Use the transform function to modify the toJSON option of Mongoose.
+// Here it adds the .id field to the object when it is converted into JSON
+// and removes the unwanted properties such as _id and __v.
+// Note: It only modifies the object that is passed to the toJSON function
+// It DOES NOT modify the DB entry at all!
+personSchema.set('toJSON', {
+  transform: (document, returnedObject) => {
+    returnedObject.id = returnedObject._id.toString()
+    delete returnedObject._id
+    delete returnedObject.__v
+  }
+})
+
 // Create fancy Constructor for the person(s) using the personSchema
 //The first argument is the name of the collection (in singular) and the second argument seems to be the schema.
 // (to ensure that it throws an error or something if you use a wrong schema in your application)
