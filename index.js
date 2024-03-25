@@ -2,7 +2,7 @@
 const express = require('express')
 //import morgan middleware logging library
 const morgan = require('morgan')
-//import cors middleware to allo cross origin sharing
+//import cors middleware to allow Cross ORigin Sharing
 const cors = require('cors')
 
 // create express application and store it in the app variable
@@ -11,11 +11,11 @@ const app = express()
 
 // Add cors middleware
 app.use(cors())
-// Add mMiddleware to parse JSON bodies
+// Add middleware to parse JSON bodies
 app.use(express.json());
-//Return file from dist directory for any valid http GET request
+// Add middleware to return file from dist directory for any valid http GET request
 app.use(express.static('dist'))
-// Add morgan Middleware to log stuff
+// Add morgan middleware to log stuff
 // create body token to access POST request data
 morgan.token('body', (req, res) =>{
   // return the request body of POST requests ONLY
