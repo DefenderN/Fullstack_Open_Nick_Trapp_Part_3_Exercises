@@ -1,6 +1,15 @@
 ### Get server information
 GET http://localhost:3001/info
 
+### Update existing person
+PUT http://localhost:3001/api/persons/65fd69189f4ece00bc418038
+Content-Type: application/json
+
+{ 
+      "name": "Peter Parker", 
+      "number": "39-eeeeeeeeeeeeee23-6423122"
+}
+
 ### Get all persons
 GET http://localhost:3001/api/persons
 

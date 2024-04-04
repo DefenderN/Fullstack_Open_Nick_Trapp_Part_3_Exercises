@@ -124,38 +124,18 @@ app.post("/api/persons", (request, response) => {
 // TODO: Update an existing person
 
 app.put("/api/persons/:id", (request, response) => {
-  console.log("CHECKPOINT 1");
-  // get id and convert to number to use as comparator
-  const id = Number(request.params.id);
 
-  // Find id entry in persons array 
-  // or return 404 if no entry for the id exists
-  const person = persons.find(person => person.id === id);
-  
-  if (person) {
-    // IMPORTANT: Grab the new number from the request body
-    const newNumber = request.body.number; // This line was missing
-    console.log("request body is:", request.body)
-    console.log("newNumber is:", newNumber)
+  console.log("Checkpoint 1",request.body)
 
-    // Modify the person data
-    persons = persons.map(arrayPerson => {
-      // Use a direct return inside map for cleaner code
-      if (arrayPerson.id === id) {
-        console.log("Ids are equal");
-        // Update the number directly here using the newNumber
-        return {...arrayPerson, number: newNumber}; // Modified to use newNumber
-      } else {
-        return arrayPerson;
-      }
-    });
-
-    // Respond with the updated person object, not the original
-    response.json({...person, number: newNumber}); // Modified to ensure updated info is sent back
-  } else {
-    // Handle a request for a person that does not exist
-    response.status(404).end();
+  const newPersonObject = {
+    number: request.body.number,
   }
+
+  Person.findByIdAndUpdate(request.params.id, newPersonObject, {new: true} )
+  .then(updatedPerson => {
+    response.json(updatedPerson)
+  })
+  .catch(error => next(error))
 });
 
 
