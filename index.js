@@ -63,7 +63,7 @@ app.get('/', (request, response) => {
   response.send('<h1>Hello World!</h1>')
 })
 
-//Get all persons
+//Get all persons from MongoDB
 app.get('/api/persons', (request, response) => {
   Person.find({}).then(persons => {
     response.json(persons)
@@ -85,8 +85,14 @@ app.get("/api/persons/:id", (request, response, next) => {
   .catch(error => next(error))
 })
 
-// TODO: Delete single person by providing its id
+// Delete single person by providing its id from MongoDB
 app.delete("/api/persons/:id", (request, response) => {
+
+  Person.findByIdAndDelete(request.params.id)
+    .then(result => {
+      response.status(204).end()
+    })
+    .catch(error => next(error))
 
   //get id of person to be deleted
   const id = Number(request.params.id)
