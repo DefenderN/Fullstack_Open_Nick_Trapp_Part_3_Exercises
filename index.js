@@ -121,11 +121,9 @@ app.post("/api/persons", (request, response) => {
         })
 })
 
-// TODO: Update an existing person
+// Update an existing person
 
 app.put("/api/persons/:id", (request, response) => {
-
-  console.log("Checkpoint 1",request.body)
 
   const newPersonObject = {
     number: request.body.number,
@@ -139,20 +137,24 @@ app.put("/api/persons/:id", (request, response) => {
 });
 
 
-//TODO: Server Info
+// Server Info returns the number of persons in the MongoDB
 app.get("/info", (request, response) => {
 
     // log the current time stamp
     const now = new Date().toString();
     
+
     // get number of persons in the "phonebook"
-    let numberOfPersons = persons.length;
+    
+    Person.find({}).then(persons => {
+      let numberOfPersons = persons.length;
 
-    //put together response string
-    let responseString = `<p>Phonebook contains info for ${numberOfPersons} persons.</p>
-    <p> TIME: ${now} </p>`;
+      //put together response string
+      let responseString = `<p>Phonebook contains info for ${numberOfPersons} persons.</p>
+      <p> TIME: ${now} </p>`;
 
-    response.send(responseString)
+      response.send(responseString)
+    })
 })
 
 // Middlewares defined AFTER our routes 
