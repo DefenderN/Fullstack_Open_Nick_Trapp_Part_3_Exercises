@@ -96,7 +96,7 @@ app.delete("/api/persons/:id", (request, response) => {
 })
 
 // Add a single person to MongoDB
-app.post("/api/persons", (request, response) => {
+app.post("/api/persons", (request, response, next) => {
 
   //Assign input data to more understandable variable names
   const name = request.body.name
@@ -119,6 +119,7 @@ app.post("/api/persons", (request, response) => {
         .then(savedPerson => {
           response.json(savedPerson)
         })
+        .catch(error => next(error))
 })
 
 // Update an existing person
@@ -170,8 +171,9 @@ const errorHandler = (error, request, response, next) => {
 
   if (error.name === `CastError`) {
     return response.status(400).send({error: `Malformatted id`})
+  } else if (error.name === 'ValidationError') {
+    return response.status(400).json({ error: error.message })
   }
-
   // Pass the error to the next middleware
   next(error)
 }
