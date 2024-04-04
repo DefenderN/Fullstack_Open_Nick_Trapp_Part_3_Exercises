@@ -93,15 +93,6 @@ app.delete("/api/persons/:id", (request, response) => {
       response.status(204).end()
     })
     .catch(error => next(error))
-
-  //get id of person to be deleted
-  const id = Number(request.params.id)
-  console.log("ID to remove is:", id)
-  // delete entry with matching id
-  persons = persons.filter(person => person.id !== id)
-  
-  //return response message
-  response.send(`Person with id ${id} will be deleted`)
 })
 
 // Add a single person to MongoDB
