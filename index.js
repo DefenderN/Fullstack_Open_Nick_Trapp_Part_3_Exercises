@@ -97,7 +97,7 @@ app.delete("/api/persons/:id", (request, response) => {
 
 // Add a single person to MongoDB
 app.post("/api/persons", (request, response, next) => {
-
+  console.log("app.post method is called")
   //Assign input data to more understandable variable names
   const name = request.body.name
   const number = request.body.number
@@ -130,7 +130,7 @@ app.put("/api/persons/:id", (request, response) => {
     number: request.body.number,
   }
 
-  Person.findByIdAndUpdate(request.params.id, newPersonObject, {new: true} )
+  Person.findByIdAndUpdate(request.params.id, newPersonObject, { new: true, runValidators: true, context: 'query' } )
   .then(updatedPerson => {
     response.json(updatedPerson)
   })

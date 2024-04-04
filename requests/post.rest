@@ -1,0 +1,12 @@
+### Add a person
+POST http://localhost:3001/api/persons
+Content-Type: application/json
+
+{ 
+      "name": "yoooo", 
+      "number": "123",
+      "eqweqwe": "111"
+}
+
+### Get people
+GET http://localhost:3001/api/persons
