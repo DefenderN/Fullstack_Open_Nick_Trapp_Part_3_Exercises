@@ -21,7 +21,10 @@ mongoose.connect(url)
 
 // Define person Schema
 const personSchema = new mongoose.Schema({
-    name: String,
+    name: {
+        type: String,
+        min: [3, `Name must be a minimum of 3 letters`]
+    },
     number: String
 })
 

@@ -6,8 +6,8 @@ PUT http://localhost:3001/api/persons/65fd69189f4ece00bc418038
 Content-Type: application/json
 
 { 
-      "name": "Peter Parker", 
-      "number": "39-eeeeeeeeeeeeee23-6423122"
+      "name": "ADOLF", 
+      "number": "323122"
 }
 
 ### Get all persons
