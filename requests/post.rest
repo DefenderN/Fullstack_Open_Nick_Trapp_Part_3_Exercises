@@ -3,9 +3,8 @@ POST http://localhost:3001/api/persons
 Content-Type: application/json
 
 { 
-      "name": "yoooo", 
-      "number": "123",
-      "eqweqwe": "111"
+      "name": "yooo", 
+      "number": "10-22-334455"
 }
 
 ### Get people

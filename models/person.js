@@ -19,13 +19,26 @@ mongoose.connect(url)
         console.log(`error connecting to MongoDB:`, error.message)
     })
 
+// Define validator functions for person Schema
+const validatePhoneNumber = (phoneNumber) => {
+    const regEx = /^\d{2,3}-\d{1,}$/;
+    return regEx.test(phoneNumber)
+}
+
 // Define person Schema
 const personSchema = new mongoose.Schema({
     name: {
         type: String,
         minLength: [3, `Name must be a minimum of 3 letters`]
     },
-    number: String
+    number: {
+        type: String,
+        minLength: [8, `Number must be a minimum of 8 characters`],
+        validate: {
+            validator: validatePhoneNumber,
+            message: "The number has to be of format 123-1234... or 12-1234...."
+        }
+    }
 })
 
 // Use the transform function to modify the toJSON option of Mongoose.
